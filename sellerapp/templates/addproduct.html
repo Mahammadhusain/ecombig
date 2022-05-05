@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Add Products |
+{% endblock title %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Add Product</h2>
+            </div>
+            <div class="card-body ">
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-secondary" href="{% url 'sellerdash' %}">Go Dashboard</a>
+                </div>
+                <div>
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                        <strong>Holy guacamole!</strong>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    
+                    {% endfor %}
+                </div>
+                <form method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for fm in form %}
+                    <div class="mb-4">
+                        <label>{{fm.label_tag}}</label>
+                        {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                    </div>
+                    {% endfor %}
+                    <button class="btn btn-primary" type="submit">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

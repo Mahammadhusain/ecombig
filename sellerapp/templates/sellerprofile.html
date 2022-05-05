@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Seller Profile |
+{% endblock title %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Seller Profile</h2>
+            </div>
+            <div class="card-body row">
+                <div class="col-6  border-end">
+                    
+                    <form  method="POST" novalidate enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for fm in form %}
+                        <div class="mb-4">
+                            <label>{{fm.label_tag}}</label>
+                            {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                        </div>
+                        {% endfor %}
+                        <button class="btn btn-primary" type="submit">Add Store</button>
+                    </form>
+                </div>
+
+                <div class="col-6 mt-4">
+
+                    <table class="table">
+                        <tr>
+                            <td colspan="2" class="text-center bg-secondary "><h5 class="text-light">Profile info</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <div class="d-flex justify-content-center mt-3 mt-sm-0">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar-xxl me-3">
+                                            
+                                            {% if request.user.picture %}
+                                            <img style="border: 1px solid;" src="{{request.user.picture.url}}" alt="" class="img-fluid rounded-circle d-block">
+                                            {% else %}
+                                            <img style="border: 1px solid;" src="{% static 'assets/images/users/av.jpg' %}" alt="" class="img-fluid rounded-circle d-block">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td>{{request.user.name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Firstname</th>
+                            <td>{{request.user.fname}}</td>
+                        </tr>
+                        <tr>
+                            <th>Lastname</th>
+                            <td>{{request.user.lname}}</td>
+                        </tr>
+                        <tr>
+                            <th>E-Mail</th>
+                            <td>{{request.user.email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact No.</th>
+                            <td>{{request.user.phone}}</td>
+                        </tr>
+                        <tr>
+                            <th>Birth Date</th>
+                            <td>{{request.user.date_of_birth}}</td>
+                        </tr>
+    
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock body %}

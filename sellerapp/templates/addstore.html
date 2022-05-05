@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Add Store |
+{% endblock title %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Add Store</h2>
+            </div>
+            <div class="card-body ">
+                
+                <form method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for fm in form %}
+                    <div class="mb-4">
+                        <label>{{fm.label_tag}}</label>
+                        {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                    </div>
+                    {% endfor %}
+                    <button class="btn btn-primary" type="submit">Add Store</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Store Details |
+{% endblock title %}
+
+
+{% block body %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Store Details</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Store Details</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+
+<!-- Dashboard blocks start -->
+<div class="row ">
+
+
+    <div class="col-xl-12 col-md-6 ">
+        <!-- card -->
+        <div class="card card-h-100 ">
+            <!-- card body -->
+            <div class="card-body">
+                <div class="row align-items-center ">
+                    <div class="col-lg-12 p-3">
+                        <div class="d-flex justify-content-end">
+                            <form action="" method="GET">
+                                <a href="{% url 'addproducts' sroreid %}" class="btn font-16 btn-primary"
+                                    id="btn-new-event">
+                                    <i class="mdi mdi-plus-circle-outline"></i> Add New Product
+                                    
+                                </a>
+                            </form>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-lg-12 p-3">
+                        <form class="" action="" method="GET">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <input class="form-control" list="datalistOptions" name="mcate"
+                                        placeholder="Main Category">
+                                    <datalist id="datalistOptions">
+
+                                        {% for i in get_mcat %}
+                                        <option value="{{i}}"></option>
+
+                                        {% endfor %}
+
+                                    </datalist>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input class="form-control" list="datalistOptions1" name="scate"
+                                        placeholder="Sub Category">
+                                    <datalist id="datalistOptions1">
+
+                                        {% for i in get_scat %}
+                                        <option value="{{i}}"></option>
+
+                                        {% endfor %}
+
+                                    </datalist>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input class="form-control" name="pname" type="search"
+                                        placeholder="Enter Product Name">
+                                </div>
+
+                                <div class="col-lg-1 d-grid gap-2">
+                                    <button class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Search Product" class="btn btn-secondary" type="submit"><i
+                                            class="bx bx-search-alt align-middle"></i></button>
+                                </div>
+                                <div class="col-lg-1  d-grid gap-2">
+                                    <a href="{% url 'storedetails' sroreid %}" class="btn btn-secondary"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="All Products"
+                                        class="btn btn-secondary"><i class="dripicons-view-list"></i></a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    {% for p in show_products %}
+                    <div class="col-lg-12">
+                        <div class="card border border-primary">
+                            <div class="card-header bg-transparent border-primary">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="my-0 text-primary">{{p.name}}</h5>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-3 d-flex justify-content-center">
+                                        <img src="{{p.image.url}}"  alt="...">
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <table class="table table-sm table-bordered border-info table-sm">
+                                            <tr>
+                                                <th class="bg-secondary text-light col-lg-3">Product Name</th>
+                                                <td>{{p.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Main Category</th>
+                                                <td>{{p.maincate.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Sub Category</th>
+
+                                                {% if p.subcate.name %}
+
+                                                <td>{{p.subcate.name}}</td>
+                                                {% else %}
+                                                <td><i class="text-muted">Sub Category no available</i></td>
+
+                                                {% endif %}
+
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Og Price</th>
+                                                <td>{{p.og_price}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Sell Price</th>
+                                                <td>{{p.sell_price}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Discount(%)</th>
+                                                <td class="text-danger"> - {{p.discount}} %</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Dis. Price</th>
+                                                <td>{{p.discountedprice}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Info</th>
+                                                <td>{{p.info|truncatewords:5}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Status</th>
+                                                <td><span class="badge bg-danger rounded-pill">{{p.status}}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary text-light">Actions</th>
+                                                <td>
+                                                    <a href="{% url 'updateproducts' p.id %}" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        title="Update {{p.name|truncatewords:2}} "
+                                                        class="btn btn-soft-success waves-effect waves-light ">
+                                                        <i class="bx bx-check-double font-size-16 align-middle"></i>
+                                                    </a>
+                                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        title="Delete {{p.name|truncatewords:2}}"
+                                                        class="btn btn-soft-danger waves-effect waves-light ">
+                                                        <i class="dripicons-trash"></i>
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {% empty %}
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <img src="{% static 'assets/images/not.png' %}" alt="">
+                        <!-- <p class="mt-3">You Have not any Strore <a href="">Add New Store</a> </p> -->
+                    </div>
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <p class="mt-3">You Have not any Store <a href="">Add New Store</a> </p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div>
+</div>
+<!-- Dashboard blocks end -->
+
+{% endblock body %}

@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Dashboard |
+{% endblock title %}
+
+
+{% block body %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Dashboard</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+
+<!-- Dashboard blocks start -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+        <div class="">
+
+            <a href="{% url 'addstore' %}" class="btn font-16 btn-primary" id="btn-new-event">
+                <i class="mdi mdi-plus-circle-outline"></i> Add New Store
+
+            </a>
+
+        </div>
+    </div>
+    <div class="col-xl-12 col-md-12 d-flex justify-content-end">
+        <div class="p-3 text-muted">
+            <h5>Your Total Store: {{active_store_count}}</h5>
+        </div>
+    </div>
+
+
+    {% for store in all_stores %}
+
+
+    {% if store.status == True %}
+
+    <div class="col-xl-3 col-md-6 mt-4">
+        <!-- card -->
+        <div class="card card-h-100 bg-secondary">
+            <!-- card body -->
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">
+                            <strong>
+                                <h5>
+                                    <a class="text-white" href="{% url 'storedetails' store.id %}">{{store.storename}}
+                                    </a>
+                                </h5>
+                            </strong></span>
+                        <h4 class="mb-3">
+                            <p class="text-warning">₹ 865.2</p>
+                        </h4>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        {% if store.storelogo %}
+                        <a href="{% url 'storedetails' store.id %}">
+
+
+                            <img data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="View {{store.storename}}'s Details" class="img-thumbnail " style="height: 70px;"
+                                src="{{store.storelogo.url}}" alt="">
+
+                        </a>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+                <div class="">
+                    <p>
+                    <h5 class="text-light">Total Items : {{store.total_quantity}} </h5>
+                    </p>
+                </div>
+                <div class="mt-2 d-flex justify-content-end">
+                    <div class="row">
+                        <div class="col">
+
+                            <a data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Update {{store.storename|truncatewords:2}}" class="btn btn-success btn-sm"
+                                href="{% url 'updatestore' store.id %}"><i class="bx bx-edit-alt"></i></a>
+                        </div>
+                        <!-- <div class="col">
+
+                            <a data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Delete {{store.storename|truncatewords:2}}" class="btn btn-danger btn-sm"
+                                onclick="deletedata({{store.id}})"><i class="bx bxs-trash-alt"></i></a>
+                        </div> -->
+                        <div class="col">
+
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal{{store.id}}" data-bs-whatever="@mdo"><i
+                                    class="dripicons-information"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div>
+    {% endif %}
+
+    {% endfor %}
+
+    <!-- Modal For Store full Information -->
+    <div class="d-flex flex-wrap gap-3">
+
+        {% for store in all_stores %}
+        <div class="modal fade" id="exampleModal{{store.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Store Full Info</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table ">
+                            <tr>
+                                <th colspan="2" class="text-center">
+                                    <img src="{{store.storelogo.url}}" alt="">
+                                </th>
+
+                            </tr>
+                            <tr>
+                                <th>Store name</th>
+                                <td>{{store.storename}}</td>
+                            </tr>
+                            <tr>
+                                <th>Category type</th>
+                                <td>{{store.storecategory}}</td>
+                            </tr>
+                            <tr>
+                                <th>GST No</th>
+                                <td>{{store.gstinno}}</td>
+                            </tr>
+                            <tr>
+                                <th>PAN No</th>
+                                <td>{{store.panno}}</td>
+                            </tr>
+                            <tr>
+                                <th>Store Address</th>
+                                <td>{{store.shopaddress}}</td>
+                            </tr>
+                            <tr>
+                                <th>Registred Signature</th>
+                                <td><img style="height: 100px;" class="img-thumbnail" src="{{store.signature.url}}"
+                                        alt=""></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="{% url 'updatestore' store.id %}" class="btn btn-success">Update details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+
+</div>
+<!-- Dashboard blocks end -->
+{% endblock body %}
